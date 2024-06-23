@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import CreateForm from "./components/CreateForm";
+import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [success, setSuccess] = useState(null);
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
@@ -23,7 +25,10 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) => {
+      blogs.sort((a, b) => b.likes - a.likes);
+      setBlogs(blogs);
+    });
   }, []);
 
   const logout = () => {
@@ -32,7 +37,18 @@ const App = () => {
   };
 
   const addBlog = (newBlog) => {
+    blogFormRef.current.toggleVisibility();
     setBlogs(blogs.concat(newBlog));
+  };
+
+  const updateBlog = (updatedBlog) => {
+    setBlogs(
+      blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+    );
+  };
+
+  const removeBlog = (blogToDelete) => {
+    setBlogs(blogs.filter((blog) => blog.id !== blogToDelete));
   };
 
   return (
@@ -56,15 +72,22 @@ const App = () => {
           <p>{user.name} logged in</p>
           <button onClick={logout}>logout</button>
 
-          <h2>Create New</h2>
-          <CreateForm
-            setMessage={setMessage}
-            addBlog={addBlog}
-            setSuccess={setSuccess}
-          />
+          <Togglable buttonLabel="new blog" ref={blogFormRef}>
+            <h2>Create New</h2>
+            <CreateForm
+              setMessage={setMessage}
+              addBlog={addBlog}
+              setSuccess={setSuccess}
+            />
+          </Togglable>
 
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              updateBlog={updateBlog}
+              removeBlog={removeBlog}
+            />
           ))}
         </div>
       )}
