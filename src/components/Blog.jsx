@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import blogService from "../services/blogs";
+import PropTypes from "prop-types";
 
 const Blog = ({ blog, updateBlog, removeBlog }) => {
   const blogStyle = {
@@ -65,5 +66,12 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
     </div>
   );
 };
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  updateBlog: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
+};
+Blog.displayName = "Blog";
 
 export default Blog;
