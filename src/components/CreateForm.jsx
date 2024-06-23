@@ -47,6 +47,7 @@ const CreateForm = ({ setMessage, addBlog, setSuccess }) => {
         <input
           type="text"
           value={title}
+          placeholder="Write Something..."
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
