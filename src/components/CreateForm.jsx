@@ -45,6 +45,7 @@ const CreateForm = ({ setMessage, addBlog, setSuccess }) => {
       <div>
         title:
         <input
+          data-testid="title"
           type="text"
           value={title}
           placeholder="Write Something..."
@@ -54,6 +55,7 @@ const CreateForm = ({ setMessage, addBlog, setSuccess }) => {
       <div>
         author:
         <input
+          data-testid="author"
           type="text"
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
@@ -62,6 +64,7 @@ const CreateForm = ({ setMessage, addBlog, setSuccess }) => {
       <div>
         url:
         <input
+          data-testid="url"
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}

@@ -3,7 +3,7 @@ import { useState } from "react";
 import blogService from "../services/blogs";
 import PropTypes from "prop-types";
 
-const Blog = ({ blog, updateBlog, removeBlog }) => {
+const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -60,7 +60,9 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
           <p>Likes: {blog.likes}</p>
           <p>Author: {blog.author}</p>
           <button onClick={likeBlog}>Like</button>
-          <button onClick={deleteBlog}>Remove</button>
+          {user.name === blog.author ? (
+            <button onClick={deleteBlog}>Remove</button>
+          ) : null}
         </div>
       </div>
     </div>
